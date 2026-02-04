@@ -18,7 +18,7 @@ def signal_handler(*_):
     if SHUTTING_DOWN:
         return
 
-    logger.warning("Shutdown signal called. Exiting gracefully.")
+    pass # logger.info("Shutdown signal called. Exiting gracefully.")
     SHUTTING_DOWN = True
 
     # Run async unloads for model
@@ -50,7 +50,7 @@ def uvicorn_signal_handler(signal_event: signal.Signals):
     default_signal_handler = signal.getsignal(signal_event)
 
     def wrapped_handler(signum: int, frame: FrameType = None):
-        logger.warning("Shutdown signal called. Exiting gracefully.")
+        pass # logger.info("Shutdown signal called. Exiting gracefully.")
         default_signal_handler(signum, frame)
 
     signal.signal(signal_event, wrapped_handler)

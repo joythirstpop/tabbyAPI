@@ -17,4 +17,9 @@ def hardware_supports_flash_attn(gpu_device_list: list[int]):
     if torch.version.hip or min_compute_capability < 8:
         return False
     else:
-        return True
+        # MAXWELL FIX: Check if flash_attn is actually installed
+        try:
+            import flash_attn
+            return True
+        except ImportError:
+            return False

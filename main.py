@@ -3,7 +3,7 @@
 # Set this env var for cuda malloc async before torch is initalized
 import os
 
-os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "backend:cudaMallocAsync"
+os.environ["PYTORCH_ALLOC_CONF"] = "backend:cudaMallocAsync"
 
 import argparse
 import asyncio

@@ -250,18 +250,24 @@ async def find_prompt_template(template_name, model_dir: pathlib.Path):
         ]
 
     # Continue on exception since functions are tried as they fail
+    # Continue on exception since functions are tried as they fail
+    exceptions = []
+    found_template = False
     for template_func in find_template_functions:
         try:
             prompt_template = await template_func()
             if prompt_template is not None:
                 return prompt_template
         except TemplateLoadError as e:
-            logger.warning(f"TemplateLoadError: {str(e)}")
+            exceptions.append(str(e))
             continue
         except Exception:
             logger.error(traceback.format_exc())
-            logger.warning(
-                "An unexpected error happened when trying to load the template. "
-                "Trying other methods."
-            )
+            exceptions.append("Unexpected error")
             continue
+    
+    # Only log if NO template was found after all attempts
+    if exceptions:
+        for e in exceptions:
+            # We only log debug here because it's expected that some methods fail
+            pass

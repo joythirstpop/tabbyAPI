@@ -145,11 +145,11 @@ class ExllamaV2Container(BaseModelContainer):
         self.use_draft_model = draft_args and draft_model_name
 
         # Always disable draft if params are incorrectly configured
+        # Fix: Only warn if user explicitly provided draft args but forgot key items
         if draft_args and draft_model_name is None:
-            logger.warning(
-                "Draft model is disabled because a model name "
-                "wasn't provided. Please check your config.yml!"
-            )
+            # It's common to have draft params (defaults) but no name. 
+            # This is not a warning condition, just an info that draft is off.
+            logger.info("Draft model disabled (no model name provided).")
             self.use_draft_model = False
 
         if self.use_draft_model:
